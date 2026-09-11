@@ -1,0 +1,2261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SafePath AI | Road Intelligence</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:
+        "Segoe UI",
+        Inter,
+        Arial,
+        sans-serif;
+
+    background:#f5f1e8;
+    color:#27343a;
+    min-height:100vh;
+}
+
+
+/* ================= HEADER ================= */
+
+.header{
+    height:72px;
+    background:#fffdf8;
+    border-bottom:1px solid #e5ded1;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 28px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    width:42px;
+    height:42px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:11px;
+
+    background:#176b62;
+    color:white;
+
+    font-size:18px;
+    font-weight:800;
+}
+
+.brand-title{
+    font-size:18px;
+    font-weight:750;
+}
+
+.brand-sub{
+    font-size:8px;
+    color:#89938f;
+    letter-spacing:1.4px;
+    margin-top:3px;
+}
+
+.live-status{
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    font-size:10px;
+    font-weight:750;
+
+    color:#176b62;
+}
+
+.status-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#28a889;
+}
+
+
+/* ================= MAIN ================= */
+
+.container{
+    max-width:1500px;
+    margin:auto;
+    padding:22px;
+}
+
+.grid{
+    display:grid;
+
+    grid-template-columns:
+        minmax(0,1fr)
+        350px;
+
+    gap:20px;
+}
+
+
+/* ================= CARD ================= */
+
+.card{
+    background:#fffdf8;
+
+    border:1px solid #e5ded1;
+
+    border-radius:17px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 7px 28px rgba(
+            65,
+            55,
+            40,
+            .07
+        );
+}
+
+
+/* ================= CAMERA HEADER ================= */
+
+.camera-header{
+    height:58px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 18px;
+
+    border-bottom:1px solid #ebe5da;
+}
+
+.camera-title{
+    font-size:14px;
+    font-weight:750;
+}
+
+.live{
+    display:flex;
+    align-items:center;
+    gap:6px;
+
+    font-size:9px;
+    font-weight:800;
+
+    color:#c75458;
+}
+
+.live span{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#c75458;
+}
+
+
+/* ================= CAMERA ================= */
+
+.camera{
+    position:relative;
+
+    height:590px;
+
+    background:#e5e1d8;
+
+    overflow:hidden;
+}
+
+#video{
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    display:none;
+}
+
+#overlay{
+    position:absolute;
+
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    pointer-events:none;
+}
+
+
+/* ================= CAMERA HUD ================= */
+
+.hud{
+    position:absolute;
+
+    top:14px;
+    left:14px;
+
+    display:flex;
+    gap:8px;
+}
+
+.hud-item{
+    background:rgba(
+        255,
+        253,
+        248,
+        .92
+    );
+
+    border:1px solid #ddd5c8;
+
+    border-radius:8px;
+
+    padding:7px 10px;
+
+    font-size:9px;
+    font-weight:700;
+
+    color:#56645f;
+}
+
+.hud-item strong{
+    color:#176b62;
+}
+
+
+/* ================= CAMERA CENTER ================= */
+
+.placeholder{
+    position:absolute;
+    inset:0;
+
+    display:grid;
+    place-items:center;
+
+    text-align:center;
+}
+
+.placeholder-icon{
+    width:64px;
+    height:64px;
+
+    margin:auto;
+    margin-bottom:13px;
+
+    border-radius:18px;
+
+    display:grid;
+    place-items:center;
+
+    background:#fffdf8;
+
+    border:1px solid #ddd5c8;
+
+    font-size:27px;
+
+    color:#176b62;
+}
+
+.placeholder h2{
+    font-size:17px;
+}
+
+.placeholder p{
+    margin-top:6px;
+
+    font-size:10px;
+
+    color:#87918d;
+}
+
+
+/* ================= CAMERA INFO ================= */
+
+.camera-info{
+    position:absolute;
+
+    bottom:14px;
+    left:14px;
+
+    padding:8px 11px;
+
+    border-radius:8px;
+
+    background:rgba(
+        255,
+        253,
+        248,
+        .93
+    );
+
+    border:1px solid #ddd5c8;
+
+    font-size:9px;
+
+    color:#596862;
+}
+
+
+/* ================= CONTROLS ================= */
+
+.controls{
+    display:flex;
+    gap:9px;
+
+    padding:15px;
+
+    border-top:1px solid #ebe5da;
+}
+
+button{
+    border:none;
+
+    padding:11px 18px;
+
+    border-radius:9px;
+
+    cursor:pointer;
+
+    font-size:10px;
+
+    font-weight:750;
+}
+
+.primary{
+    background:#176b62;
+    color:white;
+}
+
+.secondary{
+    background:#eee9df;
+    color:#47544f;
+}
+
+button:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+}
+
+
+/* ================= RIGHT SIDE ================= */
+
+.side{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+}
+
+.panel{
+    background:#fffdf8;
+
+    border:1px solid #e5ded1;
+
+    border-radius:15px;
+
+    padding:15px;
+
+    box-shadow:
+        0 5px 20px rgba(
+            65,
+            55,
+            40,
+            .055
+        );
+}
+
+.panel-title{
+    font-size:9px;
+
+    font-weight:800;
+
+    letter-spacing:1.1px;
+
+    color:#8b938e;
+
+    margin-bottom:12px;
+}
+
+
+/* ================= ALERT ================= */
+
+.alert{
+    padding:14px;
+
+    border-radius:11px;
+
+    background:#edf7f3;
+
+    border:1px solid #cee8df;
+}
+
+.alert.danger{
+    background:#fff0f0;
+    border-color:#efc7ca;
+}
+
+.alert-icon{
+    font-size:21px;
+    margin-bottom:5px;
+}
+
+.alert-title{
+    font-size:15px;
+    font-weight:800;
+}
+
+.alert-text{
+    margin-top:5px;
+
+    font-size:10px;
+
+    line-height:1.5;
+
+    color:#75817d;
+}
+
+
+/* ================= DATA ROW ================= */
+
+.row{
+    display:flex;
+
+    align-items:center;
+    justify-content:space-between;
+
+    padding:8px 0;
+
+    border-bottom:1px solid #eee9df;
+}
+
+.row:last-child{
+    border-bottom:none;
+}
+
+.label{
+    font-size:10px;
+    color:#87908c;
+}
+
+.value{
+    font-size:10px;
+    font-weight:800;
+}
+
+.green{
+    color:#176b62;
+}
+
+.red{
+    color:#c75458;
+}
+
+
+/* ================= STAT GRID ================= */
+
+.stats{
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:8px;
+}
+
+.stat{
+    padding:11px;
+
+    border-radius:10px;
+
+    background:#f5f1e8;
+
+    border:1px solid #e6dfd3;
+}
+
+.stat-label{
+    font-size:8px;
+
+    color:#8a938f;
+
+    text-transform:uppercase;
+
+    letter-spacing:.7px;
+}
+
+.stat-value{
+    margin-top:5px;
+
+    font-size:17px;
+
+    font-weight:800;
+
+    color:#176b62;
+}
+
+
+/* ================= OBJECT LIST ================= */
+
+.objects{
+    max-height:190px;
+
+    overflow-y:auto;
+}
+
+.object{
+    display:flex;
+
+    justify-content:space-between;
+    align-items:center;
+
+    padding:9px 10px;
+
+    margin-bottom:6px;
+
+    border-radius:8px;
+
+    background:#f8f5ee;
+
+    border:1px solid #e8e1d5;
+}
+
+.object-name{
+    font-size:10px;
+    font-weight:700;
+}
+
+.object-confidence{
+    font-size:9px;
+    color:#7f8985;
+}
+
+
+/* ================= LOCATION ================= */
+
+.location{
+    padding:11px;
+
+    border-radius:10px;
+
+    background:#f6f3ec;
+
+    border:1px solid #e6dfd3;
+}
+
+.location-name{
+    font-size:10px;
+    font-weight:750;
+}
+
+.coordinates{
+    margin-top:5px;
+
+    font-size:8px;
+
+    color:#87918d;
+}
+
+
+/* ================= FOOTER ================= */
+
+.footer{
+    text-align:center;
+
+    padding:18px;
+
+    color:#919893;
+
+    font-size:9px;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:950px){
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .camera{
+        height:500px;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .header{
+        padding:0 14px;
+    }
+
+    .container{
+        padding:12px;
+    }
+
+    .camera{
+        height:380px;
+    }
+
+    .brand-sub{
+        display:none;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+    <div class="brand">
+
+        <div class="logo">
+            S
+        </div>
+
+        <div>
+
+            <div class="brand-title">
+                SafePath AI
+            </div>
+
+            <div class="brand-sub">
+                HIDDEN PROBLEM DETECTION SYSTEM
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="live-status">
+
+        <span class="status-dot"></span>
+
+        <span id="systemStatus">
+            AI READY
+        </span>
+
+    </div>
+
+</header>
+
+
+
+<main class="container">
+
+<div class="grid">
+
+
+<!-- =====================================================
+     CAMERA
+===================================================== -->
+
+<section class="card">
+
+    <div class="camera-header">
+
+        <div class="camera-title">
+            Live Road Intelligence
+        </div>
+
+        <div class="live">
+
+            <span></span>
+
+            LIVE MONITOR
+
+        </div>
+
+    </div>
+
+
+    <div class="camera">
+
+        <video
+            id="video"
+            autoplay
+            muted
+            playsinline>
+        </video>
+
+
+        <canvas
+            id="overlay">
+        </canvas>
+
+
+        <div
+            id="placeholder"
+            class="placeholder">
+
+            <div>
+
+                <div class="placeholder-icon">
+                    ◉
+                </div>
+
+                <h2>
+                    Camera Standby
+                </h2>
+
+                <p>
+                    Start live monitoring to activate SafePath AI
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- HUD -->
+
+        <div class="hud">
+
+            <div class="hud-item">
+
+                FPS:
+                <strong id="fps">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="hud-item">
+
+                LATENCY:
+                <strong id="latency">
+                    --
+                </strong>
+
+            </div>
+
+
+            <div class="hud-item">
+
+                OBJECTS:
+                <strong id="hudObjects">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="cameraInfo"
+            class="camera-info">
+
+            AI waiting for camera
+
+        </div>
+
+    </div>
+
+
+    <div class="controls">
+
+        <button
+            id="start"
+            class="primary"
+            onclick="startCamera()">
+
+            Start Live Camera
+
+        </button>
+
+
+        <button
+            id="stop"
+            class="secondary"
+            onclick="stopCamera()"
+            disabled>
+
+            Stop Camera
+
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="side">
+
+
+<!-- ALERT -->
+
+<div class="panel">
+
+    <div class="panel-title">
+        ROAD SAFETY
+    </div>
+
+
+    <div
+        id="alert"
+        class="alert">
+
+        <div
+            id="alertIcon"
+            class="alert-icon">
+            ✓
+        </div>
+
+
+        <div
+            id="alertTitle"
+            class="alert-title">
+
+            Road Clear
+
+        </div>
+
+
+        <div
+            id="alertText"
+            class="alert-text">
+
+            SafePath AI is ready for live monitoring.
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- LIVE STATS -->
+
+<div class="panel">
+
+    <div class="panel-title">
+        LIVE TELEMETRY
+    </div>
+
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <div class="stat-label">
+                FPS
+            </div>
+
+            <div
+                id="fpsStat"
+                class="stat-value">
+
+                0
+
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Objects
+            </div>
+
+            <div
+                id="objectStat"
+                class="stat-value">
+
+                0
+
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Potholes
+            </div>
+
+            <div
+                id="potholeStat"
+                class="stat-value">
+
+                0
+
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                AI ms
+            </div>
+
+            <div
+                id="latencyStat"
+                class="stat-value">
+
+                --
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- AI ENGINE -->
+
+<div class="panel">
+
+    <div class="panel-title">
+        AI ENGINE
+    </div>
+
+
+    <div class="row">
+
+        <span class="label">
+            AI Status
+        </span>
+
+        <span
+            id="aiStatus"
+            class="value green">
+
+            ONLINE
+
+        </span>
+
+    </div>
+
+
+    <div class="row">
+
+        <span class="label">
+            Camera
+        </span>
+
+        <span
+            id="cameraStatus"
+            class="value">
+
+            STANDBY
+
+        </span>
+
+    </div>
+
+
+    <div class="row">
+
+        <span class="label">
+            Detection
+        </span>
+
+        <span
+            id="detectionStatus"
+            class="value">
+
+            WAITING
+
+        </span>
+
+    </div>
+
+
+    <div class="row">
+
+        <span class="label">
+            Engine
+        </span>
+
+        <span class="value green">
+            YOLO11n
+        </span>
+
+    </div>
+
+</div>
+
+
+
+<!-- OBJECTS -->
+
+<div class="panel">
+
+    <div class="panel-title">
+        DETECTED OBJECTS
+    </div>
+
+
+    <div
+        id="objects"
+        class="objects">
+
+        <div class="object">
+
+            <span class="object-name">
+                No objects detected
+            </span>
+
+            <span class="object-confidence">
+                --
+
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- POTHOLE -->
+
+<div class="panel">
+
+    <div class="panel-title">
+        POTHOLE MONITOR
+    </div>
+
+
+    <div class="row">
+
+        <span class="label">
+            Detected
+        </span>
+
+        <span
+            id="potholes"
+            class="value">
+
+            0
+
+        </span>
+
+    </div>
+
+
+    <div class="row">
+
+        <span class="label">
+            Risk Level
+        </span>
+
+        <span
+            id="risk"
+            class="value green">
+
+            LOW
+
+        </span>
+
+    </div>
+
+
+    <div class="row">
+
+        <span class="label">
+            Confidence
+        </span>
+
+        <span
+            id="confidence"
+            class="value">
+
+            --
+
+        </span>
+
+    </div>
+
+</div>
+
+
+
+<!-- LOCATION -->
+
+<div class="panel">
+
+    <div class="panel-title">
+        LOCATION
+    </div>
+
+
+    <div class="location">
+
+        <div
+            id="location"
+            class="location-name">
+
+            Waiting for GPS
+
+        </div>
+
+
+        <div
+            id="coordinates"
+            class="coordinates">
+
+            Location permission required
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</aside>
+
+</div>
+
+</main>
+
+
+<div class="footer">
+
+    SafePath AI • Intelligent road safety monitoring
+
+</div>
+
+
+
+<script>
+
+/* ==========================================================
+   MAXIMUM SPEED LIVE ENGINE
+========================================================== */
+
+let stream = null;
+
+let running = false;
+
+let busy = false;
+
+let lastFrameTime = 0;
+
+let frameCounter = 0;
+
+let fpsStart = performance.now();
+
+let currentFPS = 0;
+
+
+/*
+   100ms target interval.
+
+   The busy flag prevents multiple requests
+   from stacking up.
+*/
+
+const DETECTION_INTERVAL = 100;
+
+
+/* ==========================================================
+   START CAMERA
+========================================================== */
+
+async function startCamera(){
+
+    try{
+
+        stream =
+            await navigator
+                .mediaDevices
+                .getUserMedia({
+
+                    video:{
+                        facingMode:{
+                            ideal:"environment"
+                        },
+
+                        width:{
+                            ideal:960
+                        },
+
+                        height:{
+                            ideal:540
+                        },
+
+                        frameRate:{
+                            ideal:30,
+                            max:30
+                        }
+
+                    },
+
+                    audio:false
+
+                });
+
+
+        const video =
+            document.getElementById(
+                "video"
+            );
+
+
+        video.srcObject =
+            stream;
+
+
+        await video.play();
+
+
+        video.style.display =
+            "block";
+
+
+        document
+            .getElementById(
+                "placeholder"
+            )
+            .style.display =
+            "none";
+
+
+        document
+            .getElementById(
+                "start"
+            )
+            .disabled =
+            true;
+
+
+        document
+            .getElementById(
+                "stop"
+            )
+            .disabled =
+            false;
+
+
+        document
+            .getElementById(
+                "cameraStatus"
+            )
+            .textContent =
+            "ACTIVE";
+
+
+        document
+            .getElementById(
+                "cameraStatus"
+            )
+            .className =
+            "value green";
+
+
+        document
+            .getElementById(
+                "detectionStatus"
+            )
+            .textContent =
+            "SCANNING";
+
+
+        document
+            .getElementById(
+                "detectionStatus"
+            )
+            .className =
+            "value green";
+
+
+        document
+            .getElementById(
+                "systemStatus"
+            )
+            .textContent =
+            "LIVE AI";
+
+
+        document
+            .getElementById(
+                "cameraInfo"
+            )
+            .textContent =
+            "Fast AI road scanning active";
+
+
+        running = true;
+
+
+        requestLocation();
+
+
+        lastFrameTime =
+            performance.now();
+
+
+        requestAnimationFrame(
+            detectionLoop
+        );
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        alert(
+            "Camera permission denied or unavailable."
+        );
+
+    }
+
+}
+
+
+/* ==========================================================
+   DETECTION LOOP
+========================================================== */
+
+function detectionLoop(timestamp){
+
+    if(!running){
+
+        return;
+
+    }
+
+
+    if(
+        timestamp -
+        lastFrameTime
+        >=
+        DETECTION_INTERVAL
+    ){
+
+        lastFrameTime =
+            timestamp;
+
+
+        captureFrame();
+
+    }
+
+
+    requestAnimationFrame(
+        detectionLoop
+    );
+
+}
+
+
+/* ==========================================================
+   CAPTURE
+========================================================== */
+
+async function captureFrame(){
+
+    if(busy){
+
+        return;
+
+    }
+
+
+    const video =
+        document.getElementById(
+            "video"
+        );
+
+
+    if(
+        video.readyState < 2 ||
+        !video.videoWidth
+    ){
+
+        return;
+
+    }
+
+
+    busy = true;
+
+
+    /*
+       480px is intentionally small.
+
+       Smaller image =
+       less upload +
+       less CPU work +
+       lower latency.
+    */
+
+    const MAX_WIDTH = 480;
+
+
+    const scale =
+        Math.min(
+            1,
+            MAX_WIDTH /
+            video.videoWidth
+        );
+
+
+    const canvas =
+        document.createElement(
+            "canvas"
+        );
+
+
+    canvas.width =
+        Math.round(
+            video.videoWidth *
+            scale
+        );
+
+
+    canvas.height =
+        Math.round(
+            video.videoHeight *
+            scale
+        );
+
+
+    const ctx =
+        canvas.getContext(
+            "2d",
+            {
+                alpha:false
+            }
+        );
+
+
+    ctx.drawImage(
+        video,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    canvas.toBlob(
+
+        async(blob)=>{
+
+            try{
+
+                if(!blob){
+
+                    return;
+
+                }
+
+
+                const form =
+                    new FormData();
+
+
+                form.append(
+                    "image",
+                    blob,
+                    "frame.jpg"
+                );
+
+
+                const requestStart =
+                    performance.now();
+
+
+                const response =
+                    await fetch(
+                        "/api/detect",
+                        {
+                            method:"POST",
+                            body:form
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                const networkTime =
+                    performance.now()
+                    -
+                    requestStart;
+
+
+                if(
+                    data.success
+                ){
+
+                    showResults(
+                        data,
+                        canvas.width,
+                        canvas.height,
+                        networkTime
+                    );
+
+                }
+
+            }
+
+            catch(error){
+
+                console.error(
+                    "Detection:",
+                    error
+                );
+
+            }
+
+            finally{
+
+                busy = false;
+
+            }
+
+        },
+
+        "image/jpeg",
+
+        0.45
+
+    );
+
+}
+
+
+/* ==========================================================
+   RESULTS
+========================================================== */
+
+function showResults(
+    data,
+    frameWidth,
+    frameHeight,
+    networkTime
+){
+
+    const video =
+        document.getElementById(
+            "video"
+        );
+
+
+    const overlay =
+        document.getElementById(
+            "overlay"
+        );
+
+
+    overlay.width =
+        video.clientWidth;
+
+
+    overlay.height =
+        video.clientHeight;
+
+
+    const ctx =
+        overlay.getContext(
+            "2d"
+        );
+
+
+    ctx.clearRect(
+        0,
+        0,
+        overlay.width,
+        overlay.height
+    );
+
+
+    const scaleX =
+        overlay.width /
+        frameWidth;
+
+
+    const scaleY =
+        overlay.height /
+        frameHeight;
+
+
+    const detections =
+        data.detections || [];
+
+
+    /* ================= FPS ================= */
+
+    frameCounter++;
+
+
+    const now =
+        performance.now();
+
+
+    if(
+        now -
+        fpsStart
+        >=
+        1000
+    ){
+
+        currentFPS =
+            frameCounter;
+
+
+        frameCounter = 0;
+
+        fpsStart = now;
+
+
+        document
+            .getElementById(
+                "fps"
+            )
+            .textContent =
+            currentFPS;
+
+
+        document
+            .getElementById(
+                "fpsStat"
+            )
+            .textContent =
+            currentFPS;
+
+    }
+
+
+    /* ================= LATENCY ================= */
+
+    const aiTime =
+        data.processing_ms;
+
+
+    document
+        .getElementById(
+            "latency"
+        )
+        .textContent =
+        aiTime + " ms";
+
+
+    document
+        .getElementById(
+            "latencyStat"
+        )
+        .textContent =
+        aiTime;
+
+
+    /* ================= OBJECT COUNT ================= */
+
+    document
+        .getElementById(
+            "hudObjects"
+        )
+        .textContent =
+        detections.length;
+
+
+    document
+        .getElementById(
+            "objectStat"
+        )
+        .textContent =
+        detections.length;
+
+
+    /* ================= OBJECT LIST ================= */
+
+    const objectPanel =
+        document.getElementById(
+            "objects"
+        );
+
+
+    if(
+        detections.length === 0
+    ){
+
+        objectPanel.innerHTML = `
+
+            <div class="object">
+
+                <span class="object-name">
+                    Road clear
+                </span>
+
+                <span class="object-confidence">
+                    --
+
+                </span>
+
+            </div>
+
+        `;
+
+    }
+
+    else{
+
+        objectPanel.innerHTML = "";
+
+
+        detections.forEach(
+            item=>{
+
+                const percent =
+                    Math.round(
+                        item.confidence *
+                        100
+                    );
+
+
+                const div =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                div.className =
+                    "object";
+
+
+                div.innerHTML = `
+
+                    <span class="object-name">
+                        ${item.class}
+                    </span>
+
+                    <span class="object-confidence">
+                        ${percent}%
+                    </span>
+
+                `;
+
+
+                objectPanel.appendChild(
+                    div
+                );
+
+            }
+        );
+
+    }
+
+
+    /* ================= DRAW BOXES ================= */
+
+    detections.forEach(
+        item=>{
+
+            const box =
+                item.box;
+
+
+            const x =
+                box.x1 *
+                scaleX;
+
+
+            const y =
+                box.y1 *
+                scaleY;
+
+
+            const width =
+                (
+                    box.x2 -
+                    box.x1
+                ) *
+                scaleX;
+
+
+            const height =
+                (
+                    box.y2 -
+                    box.y1
+                ) *
+                scaleY;
+
+
+            const name =
+                item.class
+                    .toLowerCase();
+
+
+            const isPothole =
+                name.includes(
+                    "pothole"
+                ) ||
+                name.includes(
+                    "road damage"
+                );
+
+
+            ctx.strokeStyle =
+                isPothole
+                ? "#c75458"
+                : "#176b62";
+
+
+            ctx.lineWidth =
+                2.5;
+
+
+            ctx.strokeRect(
+                x,
+                y,
+                width,
+                height
+            );
+
+
+            const confidence =
+                Math.round(
+                    item.confidence *
+                    100
+                );
+
+
+            const label =
+                `${item.class} ${confidence}%`;
+
+
+            ctx.font =
+                "700 12px Segoe UI";
+
+
+            const textWidth =
+                ctx.measureText(
+                    label
+                ).width;
+
+
+            ctx.fillStyle =
+                isPothole
+                ? "#c75458"
+                : "#176b62";
+
+
+            ctx.fillRect(
+                x,
+                Math.max(
+                    0,
+                    y - 23
+                ),
+                textWidth + 14,
+                23
+            );
+
+
+            ctx.fillStyle =
+                "#ffffff";
+
+
+            ctx.fillText(
+                label,
+                x + 7,
+                Math.max(
+                    16,
+                    y - 7
+                )
+            );
+
+        }
+    );
+
+
+    /* ================= POTHOLES ================= */
+
+    const potholes =
+        data.potholes || [];
+
+
+    document
+        .getElementById(
+            "potholes"
+        )
+        .textContent =
+        potholes.length;
+
+
+    document
+        .getElementById(
+            "potholeStat"
+        )
+        .textContent =
+        potholes.length;
+
+
+    if(
+        potholes.length > 0
+    ){
+
+        const confidence =
+            Math.round(
+                potholes[0]
+                    .confidence *
+                100
+            );
+
+
+        document
+            .getElementById(
+                "alert"
+            )
+            .className =
+            "alert danger";
+
+
+        document
+            .getElementById(
+                "alertIcon"
+            )
+            .textContent =
+            "⚠";
+
+
+        document
+            .getElementById(
+                "alertTitle"
+            )
+            .textContent =
+            "POTHOLE DETECTED";
+
+
+        document
+            .getElementById(
+                "alertText"
+            )
+            .textContent =
+            `Road hazard detected at ${confidence}% confidence.`;
+
+
+        document
+            .getElementById(
+                "risk"
+            )
+            .textContent =
+            "HIGH";
+
+
+        document
+            .getElementById(
+                "risk"
+            )
+            .className =
+            "value red";
+
+
+        document
+            .getElementById(
+                "confidence"
+            )
+            .textContent =
+            confidence + "%";
+
+    }
+
+    else{
+
+        document
+            .getElementById(
+                "alert"
+            )
+            .className =
+            "alert";
+
+
+        document
+            .getElementById(
+                "alertIcon"
+            )
+            .textContent =
+            "✓";
+
+
+        document
+            .getElementById(
+                "alertTitle"
+            )
+            .textContent =
+            "Road Clear";
+
+
+        document
+            .getElementById(
+                "alertText"
+            )
+            .textContent =
+            "No pothole detected in the latest frame.";
+
+
+        document
+            .getElementById(
+                "risk"
+            )
+            .textContent =
+            "LOW";
+
+
+        document
+            .getElementById(
+                "risk"
+            )
+            .className =
+            "value green";
+
+
+        document
+            .getElementById(
+                "confidence"
+            )
+            .textContent =
+            "--";
+
+    }
+
+}
+
+
+/* ==========================================================
+   STOP
+========================================================== */
+
+function stopCamera(){
+
+    running = false;
+
+    busy = false;
+
+
+    if(stream){
+
+        stream
+            .getTracks()
+            .forEach(
+                track =>
+                    track.stop()
+            );
+
+        stream = null;
+
+    }
+
+
+    const video =
+        document.getElementById(
+            "video"
+        );
+
+
+    video.srcObject =
+        null;
+
+
+    video.style.display =
+        "none";
+
+
+    document
+        .getElementById(
+            "placeholder"
+        )
+        .style.display =
+        "grid";
+
+
+    document
+        .getElementById(
+            "start"
+        )
+        .disabled =
+        false;
+
+
+    document
+        .getElementById(
+            "stop"
+        )
+        .disabled =
+        true;
+
+
+    document
+        .getElementById(
+            "cameraStatus"
+        )
+        .textContent =
+        "STANDBY";
+
+
+    document
+        .getElementById(
+            "cameraStatus"
+        )
+        .className =
+        "value";
+
+
+    document
+        .getElementById(
+            "detectionStatus"
+        )
+        .textContent =
+        "WAITING";
+
+
+    document
+        .getElementById(
+            "detectionStatus"
+        )
+        .className =
+        "value";
+
+
+    document
+        .getElementById(
+            "systemStatus"
+        )
+        .textContent =
+        "AI READY";
+
+
+    document
+        .getElementById(
+            "cameraInfo"
+        )
+        .textContent =
+        "AI waiting for camera";
+
+
+    document
+        .getElementById(
+            "fps"
+        )
+        .textContent =
+        "0";
+
+
+    document
+        .getElementById(
+            "fpsStat"
+        )
+        .textContent =
+        "0";
+
+}
+
+
+/* ==========================================================
+   GPS
+========================================================== */
+
+function requestLocation(){
+
+    if(
+        !navigator.geolocation
+    ){
+
+        return;
+
+    }
+
+
+    navigator
+        .geolocation
+        .getCurrentPosition(
+
+            position=>{
+
+                const lat =
+                    position.coords
+                        .latitude
+                        .toFixed(6);
+
+
+                const lon =
+                    position.coords
+                        .longitude
+                        .toFixed(6);
+
+
+                document
+                    .getElementById(
+                        "location"
+                    )
+                    .textContent =
+                    "GPS position active";
+
+
+                document
+                    .getElementById(
+                        "coordinates"
+                    )
+                    .textContent =
+                    `LAT ${lat} • LON ${lon}`;
+
+            },
+
+            ()=>{
+
+                document
+                    .getElementById(
+                        "location"
+                    )
+                    .textContent =
+                    "GPS unavailable";
+
+            }
+
+        );
+
+}
+
+</script>
+
+</body>
+</html>
